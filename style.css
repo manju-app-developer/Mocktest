@@ -5,7 +5,7 @@ body {
 }
 
 .container {
-    width: 50%;
+    width: 80%;
     margin: auto;
     background: white;
     padding: 20px;
@@ -13,8 +13,10 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-h1 {
-    color: #333;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #timer {
@@ -23,14 +25,33 @@ h1 {
     color: red;
 }
 
-.question {
-    font-size: 18px;
-    margin: 10px 0;
+.test-section {
+    display: flex;
+}
+
+#question-list {
+    width: 25%;
+    background: #f8f8f8;
+    padding: 10px;
+    border-right: 2px solid #ddd;
+}
+
+#question-list button {
+    display: block;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#question-area {
+    width: 75%;
+    padding: 20px;
 }
 
 button {
     padding: 10px;
     font-size: 16px;
+    margin: 5px;
     background-color: blue;
     color: white;
     border: none;
