@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Mains Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>JEE Mains Mock Test</h1>
+        <label for="question-set">Select Question Paper:</label>
+        <select id="question-set">
+            <option value="jee_mains_2025.json">JEE Mains 2025</option>
+            <option value="jee_mains_2024.json">JEE Mains 2024</option>
+            <option value="custom_paper.json">My Custom Test</option>
+        </select>
+        <button onclick="startTest()">Start Test</button>
+        
+        <div id="timer">Time Left: <span id="time">30:00</span></div>
+        <div class="test-section">
+            <div id="question-list"></div>
+            <div id="question-area">
+                <div id="question-container"></div>
+                <button id="prev-btn">Previous</button>
+                <button id="next-btn">Next</button>
+                <button id="mark-btn">Mark for Review</button>
+                <button id="submit-btn">Submit Test</button>
+            </div>
+        </div>
+
+        <div id="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
