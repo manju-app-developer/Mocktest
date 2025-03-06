@@ -1,36 +1,23 @@
+let questions = [];
+let currentQuestion = 0;
+let answers = {};
 let timeLeft = 1800; // 30 minutes timer
 
 // Load questions from JSON
 fetch('questions.json')
     .then(response => response.json())
-    .then(questions => {
-        const quizForm = document.getElementById("quiz-form");
-
-        questions.forEach((q, index) => {
-            const questionDiv = document.createElement("div");
-            questionDiv.classList.add("question");
-
-            let optionsHtml = "";
-            q.options.forEach((option, i) => {
-                optionsHtml += `
-                    <label>
-                        <input type="radio" name="q${index}" value="${i}"> ${option}
-                    </label><br>
-                `;
-            });
-
-            questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>${optionsHtml}`;
-            quizForm.appendChild(questionDiv);
-        });
+    .then(data => {
+        questions = data;
+        renderQuestion();
+        renderQuestionList();
     });
 
 // Start countdown timer
-const timerElement = document.getElementById("time");
 function startTimer() {
     const timer = setInterval(() => {
         let minutes = Math.floor(timeLeft / 60);
         let seconds = timeLeft % 60;
-        timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        document.getElementById("time").textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
         
         if (timeLeft === 0) {
             clearInterval(timer);
@@ -41,24 +28,81 @@ function startTimer() {
 }
 startTimer();
 
-// Submit and evaluate test
+// Render Question List (Sidebar)
+function renderQuestionList() {
+    const questionList = document.getElementById("question-list");
+    questions.forEach((_, index) => {
+        let btn = document.createElement("button");
+        btn.textContent = `Q${index + 1}`;
+        btn.onclick = () => loadQuestion(index);
+        questionList.appendChild(btn);
+    });
+}
+
+// Render Question
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.innerHTML = `<p>${currentQuestion + 1}. ${q.question}</p>`;
+
+    if (q.type === "mcq") {
+        q.options.forEach((option, i) => {
+            questionContainer.innerHTML += `
+                <label>
+                    <input type="radio" name="q${currentQuestion}" value="${i}"> ${option}
+                </label><br>
+            `;
+        });
+    } else {
+        questionContainer.innerHTML += `<input type="text" id="answer${currentQuestion}" placeholder="Enter your answer">`;
+    }
+}
+
+// Load a Question
+function loadQuestion(index) {
+    currentQuestion = index;
+    renderQuestion();
+}
+
+// Navigation
+document.getElementById("next-btn").addEventListener("click", () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+    }
+});
+
+document.getElementById("prev-btn").addEventListener("click", () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+    }
+});
+
+// Mark for Review
+document.getElementById("mark-btn").addEventListener("click", () => {
+    document.getElementById(`q${currentQuestion}`).style.background = "yellow";
+});
+
+// Submit and Evaluate Test
 document.getElementById("submit-btn").addEventListener("click", submitTest);
 
 function submitTest() {
-    fetch('questions.json')
-        .then(response => response.json())
-        .then(questions => {
-            let score = 0;
-            let total = questions.length;
-            const formData = new FormData(document.getElementById("quiz-form"));
+    let score = 0;
+    let total = questions.length;
+    
+    questions.forEach((q, index) => {
+        let answer = document.querySelector(`input[name="q${index}"]:checked`);
+        let userAnswer = answer ? parseInt(answer.value) : document.getElementById(`answer${index}`).value;
+        
+        if (q.type === "integer" || q.type === "numerical") {
+            userAnswer = parseFloat(userAnswer);
+        }
 
-            questions.forEach((q, index) => {
-                const selectedAnswer = formData.get(`q${index}`);
-                if (selectedAnswer !== null && parseInt(selectedAnswer) === q.correct) {
-                    score++;
-                }
-            });
+        if (userAnswer == q.correct) {
+            score++;
+        }
+    });
 
-            document.getElementById("result").innerHTML = `You scored ${score} out of ${total}`;
-        });
+    document.getElementById("result").innerHTML = `You scored ${score} out of ${total}`;
 }
