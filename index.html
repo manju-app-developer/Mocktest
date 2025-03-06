@@ -8,10 +8,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>JEE Mains Mock Test</h1>
-        <div id="timer">Time Left: <span id="time">30:00</span></div>
-        <form id="quiz-form"></form>
-        <button id="submit-btn">Submit Test</button>
+        <header>
+            <h1>JEE Mains Mock Test</h1>
+            <div id="timer">Time Left: <span id="time">30:00</span></div>
+        </header>
+
+        <div class="test-section">
+            <div id="question-list">
+                <!-- Sidebar Navigation for Questions -->
+            </div>
+            <div id="question-area">
+                <div id="question-container"></div>
+                <button id="prev-btn">Previous</button>
+                <button id="next-btn">Next</button>
+                <button id="mark-btn">Mark for Review</button>
+                <button id="submit-btn">Submit Test</button>
+            </div>
+        </div>
+
         <div id="result"></div>
     </div>
     <script src="script.js"></script>
