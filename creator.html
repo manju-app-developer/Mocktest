@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create a New Question</h1>
+        <label>Question:</label>
+        <textarea id="question-text"></textarea>
+        
+        <label>Upload Image (optional):</label>
+        <input type="file" id="image-upload">
+
+        <label>Answer Type:</label>
+        <select id="answer-type">
+            <option value="mcq">MCQ</option>
+            <option value="integer">Integer</option>
+            <option value="numerical">Numerical</option>
+        </select>
+
+        <div id="mcq-options">
+            <label>Options:</label>
+            <input type="text" id="option1">
+            <input type="text" id="option2">
+            <input type="text" id="option3">
+            <input type="text" id="option4">
+        </div>
+
+        <label>Correct Answer:</label>
+        <input type="text" id="correct-answer">
+
+        <button onclick="saveQuestion()">Save Question</button>
+    </div>
+    <script src="creator.js"></script>
+</body>
+</html>
